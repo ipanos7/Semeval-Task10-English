@@ -6,18 +6,19 @@ from sklearn.metrics import f1_score
 from scipy.special import expit
 from datasets import Dataset
 import json
+import torch
 
-# --- Προετοιμασία Labels ---
-def prepare_labels(training_data, all_labels):
-    narratives_only = [label for label in all_labels if label["type"] == "N"]
-    label_to_idx = {label["label"]: idx for idx, label in enumerate(narratives_only)}
+# --- Prepare Combined Labels ---
+def prepare_combined_labels(training_data, all_labels):
+    combined_labels = [label for label in all_labels if label["type"] in ["N", "S"]]
+    label_to_idx = {label["label"]: idx for idx, label in enumerate(combined_labels)}
 
     num_classes = len(label_to_idx)
     binary_labels = np.zeros((len(training_data), num_classes))
 
     for i, article in enumerate(training_data):
-        narratives = article["narratives"]
-        indices = [label_to_idx[label] for label in narratives if label in label_to_idx]
+        combined = article["narratives"] + article["subnarratives"]
+        indices = [label_to_idx[label] for label in combined if label in label_to_idx]
         binary_labels[i, indices] = 1
 
     texts = [article["content"] for article in training_data]
@@ -27,7 +28,7 @@ def prepare_labels(training_data, all_labels):
 def tokenize(batch):
     return tokenizer(batch["text"], padding="max_length", truncation=True, max_length=512)
 
-# --- Μετρικές ---
+# --- Metrics ---
 def compute_metrics(pred):
     logits, labels = pred
     probabilities = expit(logits)
@@ -35,18 +36,20 @@ def compute_metrics(pred):
     f1 = f1_score(labels, predictions, average="macro", zero_division=1)
     return {"f1_macro": f1}
 
-# --- Εκπαίδευση με RepeatedStratifiedKFold ---
-def train_with_repeated_kfold(texts, labels):
+# --- Training with Repeated KFold ---
+def train_with_repeated_kfold_and_save(texts, labels):
     dataset = Dataset.from_dict({"text": texts, "label": labels.tolist()})
     dataset = dataset.map(tokenize, batched=True)
 
-    rskf = RepeatedStratifiedKFold(n_splits=5, n_repeats=20, random_state=42)
     labels_flat = labels.argmax(axis=1)
 
+    rskf = RepeatedStratifiedKFold(n_splits=5, n_repeats=20, random_state=42)
     all_f1_scores = []
+    best_f1 = 0  # Track the best F1 score
+    best_fold = None
 
     for fold, (train_idx, val_idx) in enumerate(rskf.split(np.zeros(len(labels)), labels_flat)):
-        print(f"\n=== Fold {fold+1} ===")
+        print(f"\n=== Fold {fold + 1} ===")
         train_dataset = dataset.select(train_idx)
         val_dataset = dataset.select(val_idx)
 
@@ -61,14 +64,14 @@ def train_with_repeated_kfold(texts, labels):
             logging_dir=f"./logs_fold_{fold}",
             per_device_train_batch_size=8,
             per_device_eval_batch_size=8,
-            num_train_epochs=1000000,
-            warmup_steps=1000,
+            num_train_epochs=20,
+            warmup_steps=500,
             weight_decay=0.01,
-            logging_steps=50,
+            logging_steps=10,
             load_best_model_at_end=True,
             metric_for_best_model="f1_macro",
             save_total_limit=1,
-            learning_rate=5e-6,
+            learning_rate=5e-5,
             lr_scheduler_type="linear",
             fp16=True
         )
@@ -80,12 +83,12 @@ def train_with_repeated_kfold(texts, labels):
             eval_dataset=val_dataset,
             tokenizer=tokenizer,
             compute_metrics=compute_metrics,
-            callbacks=[EarlyStoppingCallback(early_stopping_patience=10000)]
+            callbacks=[EarlyStoppingCallback(early_stopping_patience=5)]
         )
 
         trainer.train()
 
-        # Υπολογισμός F1 στο validation set
+        # Compute F1 on validation set
         predictions = trainer.predict(val_dataset)
         logits = predictions.predictions
         probabilities = expit(logits)
@@ -93,17 +96,24 @@ def train_with_repeated_kfold(texts, labels):
 
         f1 = f1_score(val_dataset["label"], predicted_labels, average="macro", zero_division=1)
         all_f1_scores.append(f1)
-        print(f"F1 Score for fold {fold+1}: {f1}")
+        print(f"F1 Score for fold {fold + 1}: {f1}")
+
+        # Save the best model
+        if f1 > best_f1:
+            best_f1 = f1
+            best_fold = fold
+            model.save_pretrained("./final_model")
+            tokenizer.save_pretrained("./final_model")
+            print(f"Best model saved from fold {fold + 1} with F1: {f1}")
 
     mean_f1 = np.mean(all_f1_scores)
     print(f"\n=== Mean F1 Score (RepeatedStratifiedKFold): {mean_f1} ===")
+    print(f"Best F1 Score: {best_f1} from fold {best_fold + 1}")
 
-    return mean_f1
+    return mean_f1, best_f1, best_fold
 
 # --- Main Script ---
 if __name__ == "__main__":
-    import torch
-
     if torch.cuda.is_available():
         print(f"CUDA is available. GPU: {torch.cuda.get_device_name(0)}")
     else:
@@ -113,17 +123,18 @@ if __name__ == "__main__":
     data_path = os.path.join(current_dir, "data", "training_dataset.json")
     labels_path = os.path.join(current_dir, "data", "all_labels.json")
 
-    print("Φόρτωση δεδομένων...")
+    print("Loading data...")
     with open(data_path, "r", encoding="utf-8") as f:
         training_data = json.load(f)
     with open(labels_path, "r", encoding="utf-8") as f:
         all_labels = json.load(f)["labels"]
 
-    print("Επεξεργασία labels...")
-    texts, labels, label_to_idx = prepare_labels(training_data, all_labels)
+    print("Preparing combined labels...")
+    texts, labels, label_to_idx = prepare_combined_labels(training_data, all_labels)
 
     tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
 
-    print("Εκπαίδευση μοντέλου με RepeatedStratifiedKFold...")
-    mean_f1 = train_with_repeated_kfold(texts, labels)
-    print(f"Μέση τιμή F1 (RepeatedStratifiedKFold): {mean_f1}")
+    print("Training with Repeated Stratified K-Fold and saving the best model...")
+    mean_f1, best_f1, best_fold = train_with_repeated_kfold_and_save(texts, labels)
+    print(f"Final Mean F1 Score: {mean_f1}")
+    print(f"Best Model from Fold {best_fold + 1} with F1 Score: {best_f1}")
