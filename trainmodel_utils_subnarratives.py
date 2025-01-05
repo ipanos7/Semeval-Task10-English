@@ -36,6 +36,7 @@ def compute_metrics(pred):
     return {"f1_macro": f1}
 
 # --- Training with Repeated KFold ---
+# --- Training with Repeated KFold ---
 def train_with_repeated_kfold(texts, labels):
     dataset = Dataset.from_dict({"text": texts, "label": labels.tolist()})
     dataset = dataset.map(tokenize, batched=True)
@@ -61,7 +62,7 @@ def train_with_repeated_kfold(texts, labels):
             logging_dir=f"./logs_fold_{fold}",
             per_device_train_batch_size=8,
             per_device_eval_batch_size=8,
-            num_train_epochs=50,
+            num_train_epochs=100,
             warmup_steps=500,
             weight_decay=0.01,
             logging_steps=10,
@@ -80,7 +81,7 @@ def train_with_repeated_kfold(texts, labels):
             eval_dataset=val_dataset,
             tokenizer=tokenizer,
             compute_metrics=compute_metrics,
-            callbacks=[EarlyStoppingCallback(early_stopping_patience=5)]
+            callbacks=[EarlyStoppingCallback(early_stopping_patience=10)]
         )
 
         trainer.train()
@@ -98,7 +99,14 @@ def train_with_repeated_kfold(texts, labels):
     mean_f1 = np.mean(all_f1_scores)
     print(f"\n=== Mean F1 Score (RepeatedStratifiedKFold): {mean_f1} ===")
 
+    # Save the model and tokenizer
+    output_dir = "./subnarrative_model"
+    model.save_pretrained(output_dir)
+    tokenizer.save_pretrained(output_dir)
+    print(f"Subnarrative model and tokenizer saved to {output_dir}.")
+
     return mean_f1
+
 
 # --- Main Script ---
 if __name__ == "__main__":

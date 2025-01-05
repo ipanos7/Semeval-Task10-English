@@ -4,6 +4,7 @@ CC: Amplifying Climate Fears: Earth will be uninhabitable soon
 CC: Amplifying Climate Fears: Other
 CC: Amplifying Climate Fears: Whatever we do it is already too late
 CC: Climate change is beneficial: CO2 is beneficial
+CC: Climate change is beneficial: Temperature increase is beneficial
 CC: Controversy about green technologies: Other
 CC: Controversy about green technologies: Renewable energy is costly
 CC: Controversy about green technologies: Renewable energy is dangerous
@@ -29,7 +30,9 @@ CC: Downplaying climate change: Ice is not melting
 CC: Downplaying climate change: Other
 CC: Downplaying climate change: Temperature increase does not have significant impact
 CC: Downplaying climate change: Weather suggests the trend is global cooling
+CC: Downplaying climate change: Sea levels are not rising
 CC: Green policies are geopolitical instruments: Green activities are a form of neo-colonialism
+CC: Green policies are geopolitical instruments: Climate-related international relations are abusive/exploitative
 CC: Green policies are geopolitical instruments: Other
 CC: Hidden plots by secret schemes of powerful groups: Blaming global elites
 CC: Hidden plots by secret schemes of powerful groups: Climate agenda has hidden motives

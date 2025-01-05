@@ -6,19 +6,19 @@ from sklearn.metrics import f1_score
 from scipy.special import expit
 from datasets import Dataset
 import json
-import torch
 
-# --- Prepare Combined Labels ---
-def prepare_combined_labels(training_data, all_labels):
-    combined_labels = [label for label in all_labels if label["type"] in ["N", "S"]]
-    label_to_idx = {label["label"]: idx for idx, label in enumerate(combined_labels)}
+
+# --- Prepare Narrative Labels ---
+def prepare_labels(training_data, all_labels):
+    narratives_only = [label for label in all_labels if label["type"] == "N"]
+    label_to_idx = {label["label"]: idx for idx, label in enumerate(narratives_only)}
 
     num_classes = len(label_to_idx)
     binary_labels = np.zeros((len(training_data), num_classes))
 
     for i, article in enumerate(training_data):
-        combined = article["narratives"] + article["subnarratives"]
-        indices = [label_to_idx[label] for label in combined if label in label_to_idx]
+        narratives = article["narratives"]
+        indices = [label_to_idx[label] for label in narratives if label in label_to_idx]
         binary_labels[i, indices] = 1
 
     texts = [article["content"] for article in training_data]
@@ -41,15 +41,13 @@ def train_with_repeated_kfold_and_save(texts, labels):
     dataset = Dataset.from_dict({"text": texts, "label": labels.tolist()})
     dataset = dataset.map(tokenize, batched=True)
 
+    rskf = RepeatedStratifiedKFold(n_splits=5, n_repeats=20, random_state=42)
     labels_flat = labels.argmax(axis=1)
 
-    rskf = RepeatedStratifiedKFold(n_splits=5, n_repeats=20, random_state=42)
     all_f1_scores = []
-    best_f1 = 0  # Track the best F1 score
-    best_fold = None
 
     for fold, (train_idx, val_idx) in enumerate(rskf.split(np.zeros(len(labels)), labels_flat)):
-        print(f"\n=== Fold {fold + 1} ===")
+        print(f"\n=== Fold {fold+1} ===")
         train_dataset = dataset.select(train_idx)
         val_dataset = dataset.select(val_idx)
 
@@ -58,13 +56,13 @@ def train_with_repeated_kfold_and_save(texts, labels):
         )
 
         training_args = TrainingArguments(
-            output_dir=f"./results_fold_{fold}",
             evaluation_strategy="epoch",
             save_strategy="epoch",
-            logging_dir=f"./logs_fold_{fold}",
+            output_dir=f"./results_fold_{fold}",  # Save locally
+            logging_dir=f"./logs_fold_{fold}",  # Save logs locally
             per_device_train_batch_size=8,
             per_device_eval_batch_size=8,
-            num_train_epochs=20,
+            num_train_epochs=50,
             warmup_steps=500,
             weight_decay=0.01,
             logging_steps=10,
@@ -96,29 +94,21 @@ def train_with_repeated_kfold_and_save(texts, labels):
 
         f1 = f1_score(val_dataset["label"], predicted_labels, average="macro", zero_division=1)
         all_f1_scores.append(f1)
-        print(f"F1 Score for fold {fold + 1}: {f1}")
-
-        # Save the best model
-        if f1 > best_f1:
-            best_f1 = f1
-            best_fold = fold
-            model.save_pretrained("./final_model")
-            tokenizer.save_pretrained("./final_model")
-            print(f"Best model saved from fold {fold + 1} with F1: {f1}")
+        print(f"F1 Score for fold {fold+1}: {f1}")
 
     mean_f1 = np.mean(all_f1_scores)
     print(f"\n=== Mean F1 Score (RepeatedStratifiedKFold): {mean_f1} ===")
-    print(f"Best F1 Score: {best_f1} from fold {best_fold + 1}")
 
-    return mean_f1, best_f1, best_fold
+    # Save the model and tokenizer
+    output_dir = "/content/drive/MyDrive/narrative_model"
+    model.save_pretrained(output_dir)
+    tokenizer.save_pretrained(output_dir)
+    print(f"Narrative model and tokenizer saved to {output_dir}.")
+
+    return mean_f1
 
 # --- Main Script ---
 if __name__ == "__main__":
-    if torch.cuda.is_available():
-        print(f"CUDA is available. GPU: {torch.cuda.get_device_name(0)}")
-    else:
-        print("CUDA is not available.")
-
     current_dir = os.path.dirname(__file__)
     data_path = os.path.join(current_dir, "data", "training_dataset.json")
     labels_path = os.path.join(current_dir, "data", "all_labels.json")
@@ -129,12 +119,10 @@ if __name__ == "__main__":
     with open(labels_path, "r", encoding="utf-8") as f:
         all_labels = json.load(f)["labels"]
 
-    print("Preparing combined labels...")
-    texts, labels, label_to_idx = prepare_combined_labels(training_data, all_labels)
+    print("Preparing narrative labels...")
+    texts, labels, label_to_idx = prepare_labels(training_data, all_labels)
 
     tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
 
-    print("Training with Repeated Stratified K-Fold and saving the best model...")
-    mean_f1, best_f1, best_fold = train_with_repeated_kfold_and_save(texts, labels)
-    print(f"Final Mean F1 Score: {mean_f1}")
-    print(f"Best Model from Fold {best_fold + 1} with F1 Score: {best_f1}")
+    print("Training with Repeated Stratified K-Fold and saving the model...")
+    train_with_repeated_kfold_and_save(texts, labels)
