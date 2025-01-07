@@ -1,15 +1,16 @@
 from transformers import RobertaTokenizer, RobertaForSequenceClassification
 import numpy as np
 import json
+import os
 
 # Load models
-narrative_model = RobertaForSequenceClassification.from_pretrained("./narrative_model")
-narrative_tokenizer = RobertaTokenizer.from_pretrained("./narrative_model")
-subnarrative_model = RobertaForSequenceClassification.from_pretrained("./subnarrative_model")
-subnarrative_tokenizer = RobertaTokenizer.from_pretrained("./subnarrative_model")
+narrative_model = RobertaForSequenceClassification.from_pretrained("/content/drive/MyDrive/narrative_model")
+narrative_tokenizer = RobertaTokenizer.from_pretrained("/content/drive/MyDrive/narrative_model")
+subnarrative_model = RobertaForSequenceClassification.from_pretrained("/content/drive/MyDrive/subnarrative_model")
+subnarrative_tokenizer = RobertaTokenizer.from_pretrained("/content/drive/MyDrive/subnarrative_model")
 
 # Load all labels
-with open("all_labels.json", "r") as f:
+with open("/content/Semeval-Task10/data/all_labels.json", "r") as f:
     all_labels = json.load(f)["labels"]
 
 # Separate narratives and subnarratives
@@ -29,8 +30,7 @@ print("Labels saved to narrative_labels.json and subnarrative_labels.json")
 
 # Function to make predictions
 def predict_labels(model, tokenizer, texts, label_to_idx):
-    dataset = [{"text": text} for text in texts]
-    tokenized = tokenizer([d["text"] for d in dataset], padding=True, truncation=True, return_tensors="pt")
+    tokenized = tokenizer(texts, padding=True, truncation=True, return_tensors="pt")
     outputs = model(**tokenized)
     logits = outputs.logits.detach().numpy()
     probabilities = 1 / (1 + np.exp(-logits))  # Sigmoid
@@ -40,10 +40,16 @@ def predict_labels(model, tokenizer, texts, label_to_idx):
 
 # Load development set
 dev_path = "data/subtask-2-documents"
-with open(dev_path, "r") as f:
-    dev_data = json.load(f)
+texts = []
+article_ids = []
 
-texts = [article["content"] for article in dev_data]
+for file_name in os.listdir(dev_path):
+    if file_name.endswith(".txt"):
+        file_path = os.path.join(dev_path, file_name)
+        with open(file_path, "r", encoding="utf-8") as file:
+            content = file.read()
+            texts.append(content)
+            article_ids.append(file_name.replace(".txt", ""))  # Use the file name as article ID
 
 # Predict narratives
 with open("narrative_labels.json", "r") as f:
@@ -57,14 +63,13 @@ subnarrative_predictions = predict_labels(subnarrative_model, subnarrative_token
 
 # Format predictions
 submission = []
-for article, narratives, subnarratives in zip(dev_data, narrative_predictions, subnarrative_predictions):
-    article_id = article["id"]
+for article_id, narratives, subnarratives in zip(article_ids, narrative_predictions, subnarrative_predictions):
     narrative_str = ";".join(narratives) if narratives else "Other"
     subnarrative_str = ";".join(subnarratives) if subnarratives else "Other"
-    submission.append(f"{article_id}\t{narrative_str}\t{subnarrative_str}")
+    submission.append(f"{article_id}.txt \t{narrative_str} \t{subnarrative_str}")
 
 # Save to submission file
-with open("submission.tsv", "w") as f:
+with open("submission.txt", "w", encoding="utf-8") as f:
     f.write("\n".join(submission))
 
-print("Predictions saved to submission.tsv")
+print("Predictions saved to submission.txt")

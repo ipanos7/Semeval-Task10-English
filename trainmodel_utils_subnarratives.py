@@ -100,7 +100,7 @@ def train_with_repeated_kfold(texts, labels):
     print(f"\n=== Mean F1 Score (RepeatedStratifiedKFold): {mean_f1} ===")
 
     # Save the model and tokenizer
-    output_dir = "./subnarrative_model"
+    output_dir = "/content/drive/MyDrive/final_subnarrative_model"
     model.save_pretrained(output_dir)
     tokenizer.save_pretrained(output_dir)
     print(f"Subnarrative model and tokenizer saved to {output_dir}.")
