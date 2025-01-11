@@ -6,11 +6,11 @@ import os
 # Load models
 narrative_model = RobertaForSequenceClassification.from_pretrained("/content/drive/MyDrive/narrative_model")
 narrative_tokenizer = RobertaTokenizer.from_pretrained("/content/drive/MyDrive/narrative_model")
-subnarrative_model = RobertaForSequenceClassification.from_pretrained("/content/drive/MyDrive/subnarrative_model")
-subnarrative_tokenizer = RobertaTokenizer.from_pretrained("/content/drive/MyDrive/subnarrative_model")
+subnarrative_model = RobertaForSequenceClassification.from_pretrained("/content/drive/MyDrive/final_subnarrative_model")
+subnarrative_tokenizer = RobertaTokenizer.from_pretrained("/content/drive/MyDrive/final_subnarrative_model")
 
 # Load all labels
-with open("/content/Semeval-Task10/data/all_labels.json", "r") as f:
+with open("/content/Semeval-Task10-English/data/all_labels.json", "r") as f:
     all_labels = json.load(f)["labels"]
 
 # Separate narratives and subnarratives
@@ -39,7 +39,7 @@ def predict_labels(model, tokenizer, texts, label_to_idx):
     return [[idx_to_label[idx] for idx, val in enumerate(pred) if val == 1] for pred in predictions]
 
 # Load development set
-dev_path = "data/subtask-2-documents"
+dev_path = "/content/Semeval-Task10-English/data/subtask-2-documents"
 texts = []
 article_ids = []
 
@@ -66,7 +66,7 @@ submission = []
 for article_id, narratives, subnarratives in zip(article_ids, narrative_predictions, subnarrative_predictions):
     narrative_str = ";".join(narratives) if narratives else "Other"
     subnarrative_str = ";".join(subnarratives) if subnarratives else "Other"
-    submission.append(f"{article_id}.txt \t{narrative_str} \t{subnarrative_str}")
+    submission.append(f"{article_id}.txt\t{narrative_str}\t{subnarrative_str}")
 
 # Save to submission file
 with open("submission.txt", "w", encoding="utf-8") as f:
