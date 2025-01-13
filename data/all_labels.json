@@ -1,0 +1,584 @@
+{
+    "labels": [
+        {
+            "label": "CC: Amplifying Climate Fears",
+            "type": "N",
+            "idx": 0
+        },
+        {
+            "label": "CC: Climate change is beneficial",
+            "type": "N",
+            "idx": 1
+        },
+        {
+            "label": "CC: Controversy about green technologies",
+            "type": "N",
+            "idx": 2
+        },
+        {
+            "label": "CC: Criticism of climate movement",
+            "type": "N",
+            "idx": 3
+        },
+        {
+            "label": "CC: Criticism of climate policies",
+            "type": "N",
+            "idx": 4
+        },
+        {
+            "label": "CC: Criticism of institutions and authorities",
+            "type": "N",
+            "idx": 5
+        },
+        {
+            "label": "CC: Downplaying climate change",
+            "type": "N",
+            "idx": 6
+        },
+        {
+            "label": "CC: Green policies are geopolitical instruments",
+            "type": "N",
+            "idx": 7
+        },
+        {
+            "label": "CC: Hidden plots by secret schemes of powerful groups",
+            "type": "N",
+            "idx": 8
+        },
+        {
+            "label": "CC: Questioning the measurements and science",
+            "type": "N",
+            "idx": 9
+        },
+        {
+            "label": "Other",
+            "type": "N",
+            "idx": 10
+        },
+        {
+            "label": "URW: Amplifying war-related fears",
+            "type": "N",
+            "idx": 11
+        },
+        {
+            "label": "URW: Blaming the war on others rather than the invader",
+            "type": "N",
+            "idx": 12
+        },
+        {
+            "label": "URW: Discrediting Ukraine",
+            "type": "N",
+            "idx": 13
+        },
+        {
+            "label": "URW: Discrediting the West, Diplomacy",
+            "type": "N",
+            "idx": 14
+        },
+        {
+            "label": "URW: Distrust towards Media",
+            "type": "N",
+            "idx": 15
+        },
+        {
+            "label": "URW: Hidden plots by secret schemes of powerful groups",
+            "type": "N",
+            "idx": 16
+        },
+        {
+            "label": "URW: Negative Consequences for the West",
+            "type": "N",
+            "idx": 17
+        },
+        {
+            "label": "URW: Overpraising the West",
+            "type": "N",
+            "idx": 18
+        },
+        {
+            "label": "URW: Praise of Russia",
+            "type": "N",
+            "idx": 19
+        },
+        {
+            "label": "URW: Russia is the Victim",
+            "type": "N",
+            "idx": 20
+        },
+        {
+            "label": "URW: Speculating war outcomes",
+            "type": "N",
+            "idx": 21
+        },
+        {
+            "label": "CC: Amplifying Climate Fears: Amplifying existing fears of global warming",
+            "type": "S",
+            "idx": 0
+        },
+        {
+            "label": "CC: Amplifying Climate Fears: Doomsday scenarios for humans",
+            "type": "S",
+            "idx": 1
+        },
+        {
+            "label": "CC: Amplifying Climate Fears: Earth will be uninhabitable soon",
+            "type": "S",
+            "idx": 2
+        },
+        {
+            "label": "CC: Amplifying Climate Fears: Other",
+            "type": "S",
+            "idx": 3
+        },
+        {
+            "label": "CC: Amplifying Climate Fears: Whatever we do it is already too late",
+            "type": "S",
+            "idx": 4
+        },
+        {
+            "label": "CC: Climate change is beneficial: CO2 is beneficial",
+            "type": "S",
+            "idx": 5
+        },
+        {
+            "label": "CC: Climate change is beneficial: Temperature increase is beneficial",
+            "type": "S",
+            "idx": 6
+        },
+        {
+            "label": "CC: Controversy about green technologies: Other",
+            "type": "S",
+            "idx": 7
+        },
+        {
+            "label": "CC: Controversy about green technologies: Renewable energy is costly",
+            "type": "S",
+            "idx": 8
+        },
+        {
+            "label": "CC: Controversy about green technologies: Renewable energy is dangerous",
+            "type": "S",
+            "idx": 9
+        },
+        {
+            "label": "CC: Controversy about green technologies: Renewable energy is unreliable",
+            "type": "S",
+            "idx": 10
+        },
+        {
+            "label": "CC: Criticism of climate movement: Ad hominem attacks on key activists",
+            "type": "S",
+            "idx": 11
+        },
+        {
+            "label": "CC: Criticism of climate movement: Climate movement is alarmist",
+            "type": "S",
+            "idx": 12
+        },
+        {
+            "label": "CC: Criticism of climate movement: Climate movement is corrupt",
+            "type": "S",
+            "idx": 13
+        },
+        {
+            "label": "CC: Criticism of climate movement: Other",
+            "type": "S",
+            "idx": 14
+        },
+        {
+            "label": "CC: Criticism of climate policies: Climate policies are ineffective",
+            "type": "S",
+            "idx": 15
+        },
+        {
+            "label": "CC: Criticism of climate policies: Climate policies are only for profit",
+            "type": "S",
+            "idx": 16
+        },
+        {
+            "label": "CC: Criticism of climate policies: Climate policies have negative impact on the economy",
+            "type": "S",
+            "idx": 17
+        },
+        {
+            "label": "CC: Criticism of climate policies: Other",
+            "type": "S",
+            "idx": 18
+        },
+        {
+            "label": "CC: Criticism of institutions and authorities: Criticism of international entities",
+            "type": "S",
+            "idx": 19
+        },
+        {
+            "label": "CC: Criticism of institutions and authorities: Criticism of national governments",
+            "type": "S",
+            "idx": 20
+        },
+        {
+            "label": "CC: Criticism of institutions and authorities: Criticism of political organizations and figures",
+            "type": "S",
+            "idx": 21
+        },
+        {
+            "label": "CC: Criticism of institutions and authorities: Criticism of the EU",
+            "type": "S",
+            "idx": 22
+        },
+        {
+            "label": "CC: Criticism of institutions and authorities: Other",
+            "type": "S",
+            "idx": 23
+        },
+        {
+            "label": "CC: Downplaying climate change: CO2 concentrations are too small to have an impact",
+            "type": "S",
+            "idx": 24
+        },
+        {
+            "label": "CC: Downplaying climate change: Climate cycles are natural",
+            "type": "S",
+            "idx": 25
+        },
+        {
+            "label": "CC: Downplaying climate change: Human activities do not impact climate change",
+            "type": "S",
+            "idx": 26
+        },
+        {
+            "label": "CC: Downplaying climate change: Humans and nature will adapt to the changes",
+            "type": "S",
+            "idx": 27
+        },
+        {
+            "label": "CC: Downplaying climate change: Ice is not melting",
+            "type": "S",
+            "idx": 28
+        },
+        {
+            "label": "CC: Downplaying climate change: Other",
+            "type": "S",
+            "idx": 29
+        },
+        {
+            "label": "CC: Downplaying climate change: Sea levels are not rising",
+            "type": "S",
+            "idx": 30
+        },
+        {
+            "label": "CC: Downplaying climate change: Temperature increase does not have significant impact",
+            "type": "S",
+            "idx": 31
+        },
+        {
+            "label": "CC: Downplaying climate change: Weather suggests the trend is global cooling",
+            "type": "S",
+            "idx": 32
+        },
+        {
+            "label": "CC: Green policies are geopolitical instruments: Climate-related international relations are abusive/exploitative",
+            "type": "S",
+            "idx": 33
+        },
+        {
+            "label": "CC: Green policies are geopolitical instruments: Green activities are a form of neo-colonialism",
+            "type": "S",
+            "idx": 34
+        },
+        {
+            "label": "CC: Green policies are geopolitical instruments: Other",
+            "type": "S",
+            "idx": 35
+        },
+        {
+            "label": "CC: Hidden plots by secret schemes of powerful groups: Blaming global elites",
+            "type": "S",
+            "idx": 36
+        },
+        {
+            "label": "CC: Hidden plots by secret schemes of powerful groups: Climate agenda has hidden motives",
+            "type": "S",
+            "idx": 37
+        },
+        {
+            "label": "CC: Hidden plots by secret schemes of powerful groups: Other",
+            "type": "S",
+            "idx": 38
+        },
+        {
+            "label": "CC: Questioning the measurements and science: Data shows no temperature increase",
+            "type": "S",
+            "idx": 39
+        },
+        {
+            "label": "CC: Questioning the measurements and science: Greenhouse effect/carbon dioxide do not drive climate change",
+            "type": "S",
+            "idx": 40
+        },
+        {
+            "label": "CC: Questioning the measurements and science: Methodologies/metrics used are unreliable/faulty",
+            "type": "S",
+            "idx": 41
+        },
+        {
+            "label": "CC: Questioning the measurements and science: Other",
+            "type": "S",
+            "idx": 42
+        },
+        {
+            "label": "CC: Questioning the measurements and science: Scientific community is unreliable",
+            "type": "S",
+            "idx": 43
+        },
+        {
+            "label": "Other",
+            "type": "S",
+            "idx": 44
+        },
+        {
+            "label": "URW: Amplifying war-related fears: By continuing the war we risk WWIII",
+            "type": "S",
+            "idx": 45
+        },
+        {
+            "label": "URW: Amplifying war-related fears: NATO should/will directly intervene",
+            "type": "S",
+            "idx": 46
+        },
+        {
+            "label": "URW: Amplifying war-related fears: Other",
+            "type": "S",
+            "idx": 47
+        },
+        {
+            "label": "URW: Amplifying war-related fears: Russia will also attack other countries",
+            "type": "S",
+            "idx": 48
+        },
+        {
+            "label": "URW: Amplifying war-related fears: There is a real possibility that nuclear weapons will be employed",
+            "type": "S",
+            "idx": 49
+        },
+        {
+            "label": "URW: Blaming the war on others rather than the invader: Other",
+            "type": "S",
+            "idx": 50
+        },
+        {
+            "label": "URW: Blaming the war on others rather than the invader: The West are the aggressors",
+            "type": "S",
+            "idx": 51
+        },
+        {
+            "label": "URW: Blaming the war on others rather than the invader: Ukraine is the aggressor",
+            "type": "S",
+            "idx": 52
+        },
+        {
+            "label": "URW: Discrediting Ukraine: Discrediting Ukrainian government and officials and policies",
+            "type": "S",
+            "idx": 53
+        },
+        {
+            "label": "URW: Discrediting Ukraine: Discrediting Ukrainian military",
+            "type": "S",
+            "idx": 54
+        },
+        {
+            "label": "URW: Discrediting Ukraine: Discrediting Ukrainian nation and society",
+            "type": "S",
+            "idx": 55
+        },
+        {
+            "label": "URW: Discrediting Ukraine: Other",
+            "type": "S",
+            "idx": 56
+        },
+        {
+            "label": "URW: Discrediting Ukraine: Rewriting Ukraine’s history",
+            "type": "S",
+            "idx": 57
+        },
+        {
+            "label": "URW: Discrediting Ukraine: Situation in Ukraine is hopeless",
+            "type": "S",
+            "idx": 58
+        },
+        {
+            "label": "URW: Discrediting Ukraine: Ukraine is a hub for criminal activities",
+            "type": "S",
+            "idx": 59
+        },
+        {
+            "label": "URW: Discrediting Ukraine: Ukraine is a puppet of the West",
+            "type": "S",
+            "idx": 60
+        },
+        {
+            "label": "URW: Discrediting Ukraine: Ukraine is associated with nazism",
+            "type": "S",
+            "idx": 61
+        },
+        {
+            "label": "URW: Discrediting the West, Diplomacy: Diplomacy does/will not work",
+            "type": "S",
+            "idx": 62
+        },
+        {
+            "label": "URW: Discrediting the West, Diplomacy: Other",
+            "type": "S",
+            "idx": 63
+        },
+        {
+            "label": "URW: Discrediting the West, Diplomacy: The EU is divided",
+            "type": "S",
+            "idx": 64
+        },
+        {
+            "label": "URW: Discrediting the West, Diplomacy: The West does not care about Ukraine, only about its interests",
+            "type": "S",
+            "idx": 65
+        },
+        {
+            "label": "URW: Discrediting the West, Diplomacy: The West is overreacting",
+            "type": "S",
+            "idx": 66
+        },
+        {
+            "label": "URW: Discrediting the West, Diplomacy: The West is weak",
+            "type": "S",
+            "idx": 67
+        },
+        {
+            "label": "URW: Discrediting the West, Diplomacy: West is tired of Ukraine",
+            "type": "S",
+            "idx": 68
+        },
+        {
+            "label": "URW: Distrust towards Media: Other",
+            "type": "S",
+            "idx": 69
+        },
+        {
+            "label": "URW: Distrust towards Media: Ukrainian media cannot be trusted",
+            "type": "S",
+            "idx": 70
+        },
+        {
+            "label": "URW: Distrust towards Media: Western media is an instrument of propaganda",
+            "type": "S",
+            "idx": 71
+        },
+        {
+            "label": "URW: Hidden plots by secret schemes of powerful groups: Other",
+            "type": "S",
+            "idx": 72
+        },
+        {
+            "label": "URW: Negative Consequences for the West: Other",
+            "type": "S",
+            "idx": 73
+        },
+        {
+            "label": "URW: Negative Consequences for the West: Sanctions imposed by Western countries will backfire",
+            "type": "S",
+            "idx": 74
+        },
+        {
+            "label": "URW: Negative Consequences for the West: The conflict will increase the Ukrainian refugee flows to Europe",
+            "type": "S",
+            "idx": 75
+        },
+        {
+            "label": "URW: Overpraising the West: NATO will destroy Russia",
+            "type": "S",
+            "idx": 76
+        },
+        {
+            "label": "URW: Overpraising the West: Other",
+            "type": "S",
+            "idx": 77
+        },
+        {
+            "label": "URW: Overpraising the West: The West belongs in the right side of history",
+            "type": "S",
+            "idx": 78
+        },
+        {
+            "label": "URW: Overpraising the West: The West has the strongest international support",
+            "type": "S",
+            "idx": 79
+        },
+        {
+            "label": "URW: Praise of Russia: Other",
+            "type": "S",
+            "idx": 80
+        },
+        {
+            "label": "URW: Praise of Russia: Praise of Russian President Vladimir Putin",
+            "type": "S",
+            "idx": 81
+        },
+        {
+            "label": "URW: Praise of Russia: Praise of Russian military might",
+            "type": "S",
+            "idx": 82
+        },
+        {
+            "label": "URW: Praise of Russia: Russia has international support from a number of countries and people",
+            "type": "S",
+            "idx": 83
+        },
+        {
+            "label": "URW: Praise of Russia: Russia is a guarantor of peace and prosperity",
+            "type": "S",
+            "idx": 84
+        },
+        {
+            "label": "URW: Praise of Russia: Russian invasion has strong national support",
+            "type": "S",
+            "idx": 85
+        },
+        {
+            "label": "URW: Russia is the Victim: Other",
+            "type": "S",
+            "idx": 86
+        },
+        {
+            "label": "URW: Russia is the Victim: Russia actions in Ukraine are only self-defence",
+            "type": "S",
+            "idx": 87
+        },
+        {
+            "label": "URW: Russia is the Victim: The West is russophobic",
+            "type": "S",
+            "idx": 88
+        },
+        {
+            "label": "URW: Russia is the Victim: UA is anti-RU extremists",
+            "type": "S",
+            "idx": 89
+        },
+        {
+            "label": "URW: Speculating war outcomes: Other",
+            "type": "S",
+            "idx": 90
+        },
+        {
+            "label": "URW: Speculating war outcomes: Russian army is collapsing",
+            "type": "S",
+            "idx": 91
+        },
+        {
+            "label": "URW: Speculating war outcomes: Russian army will lose all the occupied territories",
+            "type": "S",
+            "idx": 92
+        },
+        {
+            "label": "URW: Speculating war outcomes: Ukrainian army is collapsing",
+            "type": "S",
+            "idx": 93
+        }
+    ]
+}
